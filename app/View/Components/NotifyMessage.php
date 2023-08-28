@@ -29,6 +29,6 @@ class NotifyMessage extends Component
      */
     public function render()
     {
-        return view('components.notify-message');
+        return view('admin.components.notify-message');
     }
 }

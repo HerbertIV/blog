@@ -50,7 +50,7 @@ class Handler extends ExceptionHandler
 
     public function report(Throwable $exception)
     {
-        var_dump($exception);exit;
+        dd($exception);
 
         parent::report($exception);
     }

@@ -30,7 +30,6 @@ class ScheduleCalendar {
                 info.dayEl.style.backgroundColor = 'red';
             },
         });
-        console.log(calendar);
         calendar.render();
     }
 }

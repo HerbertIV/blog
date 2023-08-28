@@ -9,11 +9,11 @@ return [
     ],
     [
         'href' => [
-//            [
-//                'href' => 'users.index',
-//                'text' => 'menu.user.index',
-//                'icon' => 'fa fa-users',
-//            ],
+            [
+                'href' => 'roles.index',
+                'text' => 'menu.role.index',
+                'icon' => 'fa-user-group',
+            ],
 //            [
 //                'section_text' => 'menu.settings.ecard',
 //                'icon' => 'pocztowki',

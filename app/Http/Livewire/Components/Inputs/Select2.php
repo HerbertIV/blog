@@ -45,8 +45,7 @@ class Select2 extends Component
 
     public function render()
     {
-
-        return view('livewire.components.inputs.select2', [
+        return view('admin.livewire.components.inputs.select2', [
             'data' => $this->data,
             'selectedData' => $this->selectedData,
             'isAjax' => $this->isAjax,

@@ -1,6 +1,6 @@
 <?php
 
-namespace Custom\Core\Logic\Dtos\Traits;
+namespace App\Dtos\Traits;
 
 use Illuminate\Support\Str;
 

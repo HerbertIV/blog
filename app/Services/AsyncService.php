@@ -3,19 +3,19 @@
 namespace App\Services;
 
 use App\Dtos\AsyncDtos\Contracts\AsyncDtoContract;
-use App\Repositories\Contracts\RegionRepositoryContract;
+use App\Repositories\Contracts\PermissionRepositoryContract;
 use App\Services\Contracts\AsyncServiceContract;
 use Illuminate\Support\Collection;
 
 class AsyncService implements AsyncServiceContract
 {
     public function __construct(
-       private RegionRepositoryContract $regionRepository
+       private PermissionRepositoryContract $permissionRepository,
     ) {
     }
 
-    public function regions(AsyncDtoContract $dto): Collection
+    public function permissions(AsyncDtoContract $dto): Collection
     {
-        return $this->regionRepository->search($dto->getTerm())->get();
+        return $this->permissionRepository->search($dto->getTerm())->get();
     }
 }

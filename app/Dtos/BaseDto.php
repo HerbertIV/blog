@@ -2,7 +2,8 @@
 
 namespace App\Dtos;
 
-use Custom\Core\Logic\Dtos\Traits\DtoHelper;
+
+use App\Dtos\Traits\DtoHelper;
 
 abstract class BaseDto
 {

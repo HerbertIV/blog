@@ -24,4 +24,12 @@ class PermissionRepository extends BaseRepository implements PermissionRepositor
             })
         );
     }
+
+    public function search(string $term = ''): Builder
+    {
+        $query = $this->model->newQuery();
+        $query->where('name', 'like', "%$term%");
+
+        return $query;
+    }
 }

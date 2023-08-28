@@ -35,16 +35,7 @@ class PermissionEnums extends Enum
 
     public const CRUD_PERMISSION_GROUP = [
         'user' => self::FULL_ACTIONS,
-    ];
-
-    public const OTHER_PERMISSIONS = [];
-
-    public const SPECIAL_ROLE_READ_PERMISSIONS = 'role-read';
-    public const SPECIAL_ROLE_UPDATE_PERMISSIONS = 'role-update';
-
-    public const SPECIAL_PERMISSIONS = [
-        self::SPECIAL_ROLE_READ_PERMISSIONS,
-        self::SPECIAL_ROLE_UPDATE_PERMISSIONS,
+        'role' => [...self::CRUD_ACTIONS, ...['role-grant']]
     ];
 
     public static function getMiddleware(string $model, string $action): string

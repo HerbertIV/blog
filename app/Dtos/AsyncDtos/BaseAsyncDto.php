@@ -3,7 +3,7 @@
 namespace App\Dtos\AsyncDtos;
 
 use App\Dtos\AsyncDtos\Contracts\AsyncDtoContract;
-use Custom\Core\Logic\Dtos\Traits\DtoHelper;
+use App\Dtos\Traits\DtoHelper;
 
 abstract class BaseAsyncDto implements AsyncDtoContract
 {

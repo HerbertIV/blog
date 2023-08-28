@@ -7,5 +7,5 @@ use Illuminate\Support\Collection;
 
 interface AsyncServiceContract
 {
-    public function regions(AsyncDtoContract $dto): Collection;
+    public function permissions(AsyncDtoContract $dto): Collection;
 }

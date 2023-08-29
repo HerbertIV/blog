@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\Events\Templates\Mails\ProcessUserEmailChangeEvent;
+use App\Events\Templates\Mails\ResetPasswordUserEvent;
 use App\Events\Templates\Mails\ProcessUserPhoneChangeEmailSendEvent;
 use App\Events\Templates\Sms\ProcessUserPhoneChangeEvent;
 use App\Models\User;
@@ -17,7 +17,7 @@ class UserObserver
             $user->getOriginal('process_email_expire_at') !== $user->process_email_expire_at &&
             $user->process_email_expire_at > now()
         ) {
-            event(new ProcessUserEmailChangeEvent($user));
+            event(new ResetPasswordUserEvent($user));
         }
         if (
             $user->phone &&

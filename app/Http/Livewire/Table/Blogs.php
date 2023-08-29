@@ -1,0 +1,129 @@
+<?php
+
+namespace App\Http\Livewire\Table;
+
+use App\Enums\GuardEnums;
+use App\Enums\PermissionEnums;
+use App\Models\Blog;
+use App\Services\Contracts\BlogServiceContract;
+use Illuminate\Database\Eloquent\Builder;
+use Rappasoft\LaravelLivewireTables\DataTableComponent;
+use Rappasoft\LaravelLivewireTables\Views\Column;
+use Rappasoft\LaravelLivewireTables\Views\Columns\ButtonGroupColumn;
+use Rappasoft\LaravelLivewireTables\Views\Columns\LinkColumn;
+use Spatie\Permission\Models\Role;
+
+class Blogs extends DataTableComponent
+{
+    private BlogServiceContract $blogService;
+    protected $model = Blog::class;
+    protected $deleteId = null;
+    protected $enableModal = false;
+    public bool $searchStatus = false;
+
+    protected $listeners = [
+        'initModal' => 'initModal'
+    ];
+    public function __construct($id = null)
+    {
+        $this->blogService = app(BlogServiceContract::class);
+        parent::__construct($id);
+    }
+
+    public function configure(): void
+    {
+        $this->setPrimaryKey('id');
+    }
+
+    public function columns(): array
+    {
+        $isEdit = auth()->guard(GuardEnums::ADMIN)->user()->hasPermissionFromGuard('blog' . PermissionEnums::HYPHEN . PermissionEnums::UPDATE_ACTION);
+        $isDelete = auth()->guard(GuardEnums::ADMIN)->user()->hasPermissionFromGuard('blog' . PermissionEnums::HYPHEN . PermissionEnums::DELETE_ACTION);
+        return [
+            Column::make('ID', 'id')
+                ->sortable(),
+            Column::make(__('Title'), 'title')
+                ->sortable(),
+            Column::make(__('Created at'), 'created_at')
+                ->sortable(),
+            ButtonGroupColumn::make('Actions')
+                ->attributes(function ($row) {
+                    return [
+                        'class' => 'space-x-2',
+                    ];
+                })
+                ->buttons([
+                    LinkColumn::make('View') // make() has no effect in this case but needs to be set anyway
+                    ->title(fn($row) => 'View')
+                        ->location(fn($row) => route('blogs.show', ['blog' => $row]))
+                        ->attributes(function ($row) {
+                            return [
+                                'class' => 'underline text-blue-500 hover:no-underline',
+                            ];
+                        }),
+                    (
+                        $isEdit ?
+                            LinkColumn::make('Edit')
+                            ->title(fn($row) => 'Edit')
+                            ->location(fn($row) => route('blogs.edit', ['blog' => $row]))
+                            ->attributes(function ($row) {
+                                return [
+                                    'target' => '_blank',
+                                    'class' => 'underline text-blue-500 hover:no-underline',
+                                ];
+                            }) :
+                            null
+                    ),
+                    (
+                        $isDelete ?
+                            LinkColumn::make('Delete')
+                                ->title(fn($row) => 'Delete')
+                                ->location(fn($row) => route('blogs.delete', ['blog' => $row]))
+                                ->attributes(function ($row) {
+                                    return [
+                                        'target' => '_blank',
+                                        'class' => 'underline text-blue-500 hover:no-underline',
+                                        'data-delete' => true,
+                                        'wire:click' => 'initModal('.$row->getKey().')'
+                                    ];
+                                })
+                            : null
+                    ),
+                ]),
+        ];
+    }
+
+    public function customView(): string
+    {
+        return 'admin.components.modal';
+    }
+
+    public function initModal($id)
+    {
+        $this->enableModal = true;
+        $this->deleteId = $id;
+    }
+
+    public function disableModal()
+    {
+        $this->enableModal = false;
+        $this->deleteId = null;
+    }
+
+    public function delete($id)
+    {
+        if ($this->blogService->delete($id)) {
+            $this->redirect(route('blogs.index'));
+        }
+    }
+
+    public function builder(): Builder
+    {
+        return Blog::query()->select([
+            'id',
+            'title',
+            'created_at',
+        ]);
+    }
+
+}

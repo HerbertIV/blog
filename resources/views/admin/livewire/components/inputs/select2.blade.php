@@ -103,24 +103,25 @@
                         selectedValue = true;
                     }
                     $(this).select2(select2Conf);
-                    console.log(selectedValue);
                     if (selectedValue) {
                         $(this).val(select2Conf.data.map((element) => {
                             return element.id;
                         })).trigger('change');
                     }
                     $(this).on("select2:select", function (target) {
-                        Livewire.emit('selectedPermissions', target.params.data.id);
+                        console.log(target.params.data.id);
+                        Livewire.emit('{{ 'selected' . \Illuminate\Support\Str::ucfirst($name) }}', target.params.data.id);
                     });
                     $(this).on("select2:unselect", function (target) {
                         //TODO usuwanie tagów po unselect
-                        Livewire.emit('unselectedPermissions', target.params.data.id);
+                        Livewire.emit('{{ 'unselected' . \Illuminate\Support\Str::ucfirst($name) }}', target.params.data.id);
                     });
                     $(this).on("select2:clear", function (target) {
-                        Livewire.emit('clearPermissions');
+                        Livewire.emit('{{ 'clear' . \Illuminate\Support\Str::ucfirst($name) }}');
                     });
                 });
             }, 200);
+            clearSelect2();
         });
         function formatRepo(repo) {
             return repo.template ? $(repo.template) : repo.text;

@@ -5,6 +5,7 @@ namespace App\Dtos;
 class RoleDto extends BaseDto
 {
     protected string $name;
+    protected string $guardName;
 
     /**
      * @return string
@@ -12,6 +13,13 @@ class RoleDto extends BaseDto
     public function getName(): string
     {
         return $this->name;
+    }
+    /**
+     * @return string
+     */
+    public function getGuardName(): string
+    {
+        return $this->guardName;
     }
 
     /**
@@ -21,11 +29,19 @@ class RoleDto extends BaseDto
     {
         $this->name = $name;
     }
+    /**
+     * @param string $guard
+     */
+    protected function setGuardName(string $guardName): void
+    {
+        $this->guardName = $guardName;
+    }
 
     public function toArray(): array
     {
         return [
             'name' => $this->getName(),
+            'guard_name' => $this->getGuardName(),
         ];
     }
 

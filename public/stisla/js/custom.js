@@ -7,14 +7,3 @@
 
 "use strict";
 
-
-function actionDelete()
-{
-    $(document).on('click', '[data-delete]', function (e) {
-        e.preventDefault();
-    });
-}
-
-$(document).ready(function () {
-    actionDelete();
-});

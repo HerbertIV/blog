@@ -23,12 +23,12 @@ class ArrayHelper
         })->toArray();
     }
 
-    public static function prepareArrayToSelect2(array $array): array
+    public static function prepareArrayToSelect2(array $array, bool $theSameKey = false): array
     {
         $result = [];
         foreach ($array as $k => $value) {
             $result[] = [
-                'id' => $k,
+                'id' => $theSameKey ? $value : $k,
                 'name' => $value,
             ];
         }

@@ -8,12 +8,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements ReceiverContract
 {
     use HasApiTokens;
     use HasFactory;
     use Notifiable;
+    use HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -21,19 +23,9 @@ class User extends Authenticatable implements ReceiverContract
      * @var string[]
      */
     protected $fillable = [
-        'first_name',
-        'last_name',
         'email',
         'password',
-        'phone',
-        'active',
-        'email_from_process',
-        'phone_from_process',
-        'process_email_expire_at',
-        'process_phone_expire_at',
-        'process_token',
-        'sms_code',
-        'region_id',
+        'reset_token'
     ];
 
     /**
@@ -53,15 +45,7 @@ class User extends Authenticatable implements ReceiverContract
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'process_email_expire_at' => 'datetime',
-        'process_phone_expire_at' => 'datetime',
-        'active' => 'bool',
     ];
-
-    public function region(): BelongsTo
-    {
-        return $this->belongsTo(Region::class);
-    }
 
     /**
      * Search query in multiple whereOr
@@ -69,10 +53,6 @@ class User extends Authenticatable implements ReceiverContract
     public static function search($query)
     {
         return empty($query) ? static::query()
-            : static::where('first_name', 'like', '%'.$query.'%')
-                ->orWhere('last_name', 'like', '%'.$query.'%')
-                ->orWhere('concat(first_name, \' \', last_name)', 'like', '%'.$query.'%')
-                ->orWhere('concat(last_name, \' \', first_name)', 'like', '%'.$query.'%')
-                ->orWhere('email', 'like', '%'.$query.'%');
+            : static::where('email', 'like', '%'.$query.'%');
     }
 }

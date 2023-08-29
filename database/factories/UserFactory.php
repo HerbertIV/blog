@@ -19,26 +19,8 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'first_name' => fake()->name(),
-            'last_name' => fake()->lastName(),
             'email' => fake()->safeEmail(),
             'password' => Hash::make('password'),
-            'phone' => fake()->phoneNumber,
-            'active' => fake()->boolean(),
         ];
-    }
-
-    /**
-     * Indicate that the model's email address should be unverified.
-     *
-     * @return static
-     */
-    public function unverified()
-    {
-        return $this->state(function (array $attributes) {
-            return [
-                'email_verified_at' => null,
-            ];
-        });
     }
 }

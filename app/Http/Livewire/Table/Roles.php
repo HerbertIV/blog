@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\Table;
 
+use App\Enums\GuardEnums;
+use App\Enums\PermissionEnums;
 use App\Services\Contracts\RoleServiceContract;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
@@ -14,10 +16,13 @@ class Roles extends DataTableComponent
 {
     private RoleServiceContract $roleService;
     protected $model = Role::class;
-    protected $modal = false;
-    protected $delete = false;
+    protected $deleteId = null;
+    protected $enableModal = false;
+    public bool $searchStatus = false;
 
-
+    protected $listeners = [
+        'initModal' => 'initModal'
+    ];
     public function __construct($id = null)
     {
         $this->roleService = app(RoleServiceContract::class);
@@ -31,6 +36,9 @@ class Roles extends DataTableComponent
 
     public function columns(): array
     {
+        $isEdit = auth()->guard(GuardEnums::ADMIN)->user()->hasPermissionFromGuard('role' . PermissionEnums::HYPHEN . PermissionEnums::UPDATE_ACTION);
+        $isDelete = auth()->guard(GuardEnums::ADMIN)->user()->hasPermissionFromGuard('role' . PermissionEnums::HYPHEN . PermissionEnums::DELETE_ACTION);
+
         return [
             Column::make('ID', 'id')
                 ->sortable(),
@@ -53,28 +61,53 @@ class Roles extends DataTableComponent
                                 'class' => 'underline text-blue-500 hover:no-underline',
                             ];
                         }),
-                    LinkColumn::make('Edit')
-                        ->title(fn($row) => 'Edit')
-                        ->location(fn($row) => route('roles.edit', ['role' => $row]))
-                        ->attributes(function ($row) {
-                            return [
-                                'target' => '_blank',
-                                'class' => 'underline text-blue-500 hover:no-underline',
-                            ];
-                        }),
-                    LinkColumn::make('Delete')
-                        ->title(fn($row) => 'Delete')
-                        ->location(fn($row) => route('roles.delete', ['role' => $row]))
-                        ->attributes(function ($row) {
-                            return [
-                                'target' => '_blank',
-                                'class' => 'underline text-blue-500 hover:no-underline',
-                                'data-delete' => true,
-                                'wire:click' => 'delete('.$row->getKey().')'
-                            ];
-                        }),
+                    (
+                        $isEdit ?
+                        LinkColumn::make('Edit')
+                            ->title(fn($row) => 'Edit')
+                            ->location(fn($row) => route('roles.edit', ['role' => $row]))
+                            ->attributes(function ($row) {
+                                return [
+                                    'target' => '_blank',
+                                    'class' => 'underline text-blue-500 hover:no-underline',
+                                ];
+                            }) :
+                        ''
+                    ),
+                    (
+                        $isDelete ?
+                        LinkColumn::make('Delete')
+                            ->title(fn($row) => 'Delete')
+                            ->location(fn($row) => route('roles.delete', ['role' => $row]))
+                            ->attributes(function ($row) {
+                                return [
+                                    'target' => '_blank',
+                                    'class' => 'underline text-blue-500 hover:no-underline',
+                                    'data-delete' => true,
+                                    'wire:click' => 'initModal('.$row->getKey().')'
+                                ];
+                            }) :
+                        ''
+                    ),
                 ]),
         ];
+    }
+
+    public function customView(): string
+    {
+        return 'admin.components.modal';
+    }
+
+    public function initModal($id)
+    {
+        $this->enableModal = true;
+        $this->deleteId = $id;
+    }
+
+    public function disableModal()
+    {
+        $this->enableModal = false;
+        $this->deleteId = null;
     }
 
     public function delete($id)

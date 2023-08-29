@@ -48,10 +48,10 @@ class Handler extends ExceptionHandler
         });
     }
 
-    public function report(Throwable $exception)
-    {
-        dd($exception);
-
-        parent::report($exception);
-    }
+//    public function report(Throwable $exception)
+//    {
+//        dd($exception);
+//
+//        parent::report($exception);
+//    }
 }

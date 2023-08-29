@@ -62,7 +62,7 @@
                                     </a>
                                     <ul class="dropdown-menu" style="{{ $active ? 'display: block' : 'display: none' }}">
                                         @foreach ($section->section_list as $child)
-                                            @if(Gate::allows($child->permission))
+                                            @if(auth()->guard(\App\Enums\GuardEnums::ADMIN)->user()->hasPermissionFromGuard($child->permission))
                                                 <li class="{{ Request::routeIs($child->href) ? 'active' : '' }}"><a class="nav-link" href="{{ route($child->href) }}">{{ __($child->text) }}</a></li>
                                             @endif
                                         @endforeach
@@ -71,7 +71,7 @@
                             @endif
                         @else
                             <li class="dropdown {{ Request::routeIs($section->href) ? 'active' : '' }}">
-                                @if((isset($section->permission) && Gate::allows($section->permission)) || !isset($section->permission))
+                                @if((isset($section->permission) && auth()->guard(\App\Enums\GuardEnums::ADMIN)->user()->hasPermissionFromGuard($section->permission)) || !isset($section->permission))
                                     <a href="{{ route($section->href) }}" class="nav-link">
                                         <p class="icon-separate">
                                             <i class="{{ $section->icon && isset($section->icon) ? $section->icon : '' }}"></i>

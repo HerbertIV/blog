@@ -15,10 +15,7 @@ class EmailChannel implements NotificationChannelContract
         try {
             $mailable = new EmailMailable();
             $mailable->from($sections['mail_from']);
-            $to = [];
-            foreach ($event->getReceivers() as $receiver) {
-                $to[] = $receiver->email;
-            }
+            $to = $event->user()->email;
             $mailable->to($to);
             $mailable->subject($sections['subject']);
             $mailable->html($sections['content']);

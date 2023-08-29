@@ -27,6 +27,16 @@
                 url="{{ route('async.permissions') }}"
                 name="permissions" />
             @error('permissions') <span class="text-red-600">{{ $message }}</span> @enderror
+            <div class="form-group col-span-6 sm:col-span-5">
+                <x-jet-label for="guard" value="{{ __('Guards list') }}" />
+                <select class="form-select" wire:model="guard" name="guard">
+                    @foreach(App\Enums\GuardEnums::getValues() as $guard)
+                        <option value="{{ $guard }}">{{ $guard }}</option>
+                    @endforeach
+                </select>
+                <x-jet-input-error for="name" class="mt-2" />
+            </div>
+            @error('guard') <span class="text-red-600">{{ $message }}</span> @enderror
         </x-slot>
 
         <x-slot name="actions">

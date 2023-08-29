@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\GuardEnums;
+
 return [
 
     /*
@@ -14,7 +16,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => GuardEnums::WEB,
         'passwords' => 'users',
     ],
 
@@ -36,15 +38,13 @@ return [
     */
 
     'guards' => [
-        'web' => [
+        GuardEnums::WEB => [
             'driver' => 'session',
             'provider' => 'users',
         ],
-
-        'api' => [
-            'driver' => 'token',
-            'provider' => 'users',
-            'hash' => false,
+        GuardEnums::ADMIN => [
+            'driver' => 'session',
+            'provider' => 'admins',
         ],
     ],
 
@@ -67,6 +67,10 @@ return [
 
     'providers' => [
         'users' => [
+            'driver' => 'eloquent',
+            'model' => \App\Models\User::class,
+        ],
+        'admins' => [
             'driver' => 'eloquent',
             'model' => \App\Models\Admin::class,
         ],

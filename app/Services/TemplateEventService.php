@@ -38,7 +38,6 @@ class TemplateEventService implements TemplateEventServiceContract
         if (! array_key_exists($event->eventClass(), $this->events)) {
             return;
         }
-        //TODO add sms twilio send process
         $variableClass = reset($this->events[$event->eventClass()]);
         $template = $this->getTemplateForEvent($event, $variableClass);
         if (! $template) {

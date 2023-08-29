@@ -2,7 +2,23 @@
  *
  * You can write your CSS code here, DO NOT touch the default JavaScript file
  * because it will make it harder for you to update.
- * 
+ *
  */
 
 /*# sourceMappingURL=custom.css.map */
+.clear-select2 {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(-50%);
+    margin-right: 25px;
+    cursor: pointer;
+}
+.form-group.single {
+    position: relative;
+}
+.form-group .form-select {
+    width: 100%;
+    border: 1px solid #aaaaaa;
+    border-radius: 5px;
+}

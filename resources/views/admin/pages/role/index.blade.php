@@ -7,8 +7,7 @@
 
     <div>
         <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-
-            @can('role' . \App\Enums\PermissionEnums::HYPHEN . \App\Enums\PermissionEnums::CREATE_ACTION)
+            @if (auth()->guard(\App\Enums\GuardEnums::ADMIN)->user()->hasPermissionFromGuard('role' . \App\Enums\PermissionEnums::HYPHEN . \App\Enums\PermissionEnums::CREATE_ACTION))
                 <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-4">
                     <div class="px-4 py-3 sm:px-6 flex justify-end">
                         <a href="{{ route('roles.create') }}"  class="-ml- btn btn-primary shadow-none">
@@ -16,10 +15,9 @@
                         </a>
                     </div>
                 </div>
-            @endcan
+            @endif
 
             <livewire:table.roles />
-
         </div>
     </div>
 </x-admin-layout>

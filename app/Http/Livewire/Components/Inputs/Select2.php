@@ -34,15 +34,6 @@ class Select2 extends Component
         $this->label = $label;
     }
 
-    protected $listeners = [
-        'addValue' => 'addValue'
-    ];
-
-    public function addValue($value)
-    {
-        dd($value);
-    }
-
     public function render()
     {
         return view('admin.livewire.components.inputs.select2', [

@@ -18,7 +18,7 @@ class RoleService implements RoleServiceContract
     ) {
     }
 
-    public function create(RoleDto $roleDto): bool
+    public function create(RoleDto $roleDto): Role
     {
         return DB::transaction(function () use ($roleDto) {
             $role = $this->roleRepository->query()->create($roleDto->toArray());
@@ -34,7 +34,7 @@ class RoleService implements RoleServiceContract
                     ]
                 );
             }
-            return true;
+            return $role;
         });
     }
 
@@ -48,14 +48,15 @@ class RoleService implements RoleServiceContract
         return $this->roleRepository->whereIn('id', $ids)->get();
     }
 
-    public function deleteMany(array $ids): bool
-    {
-
-    }
-
     public function delete(int $id): bool
     {
-        return DB::transaction(fn () => $this->first($id)->delete());
+        return DB::transaction(function () use ($id) {
+            $role = $this->first($id);
+            if (auth()->user()->roles->contains($role)) {
+                throw new \Exception('Delete is not possible.');
+            }
+            return $role->delete();
+        });
     }
 
     public function update(RoleDto $roleDto, int $id): bool

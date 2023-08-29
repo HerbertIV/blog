@@ -2,6 +2,7 @@
 
 namespace App\Events\Templates;
 
+use App\Models\Admin;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryContract;
 use Illuminate\Database\Eloquent\Model;
@@ -39,11 +40,11 @@ class EventWrapper
         return get_class($this->event);
     }
 
-    public function user(): User|null
+    public function user(): User|Admin|null
     {
         try {
             $result = $this->__call('getUser', []);
-            if ($result instanceof User) {
+            if ($result instanceof User || $result instanceof Admin) {
                 return $result;
             }
         } catch (\BadMethodCallException $ex) {

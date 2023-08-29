@@ -22,4 +22,14 @@
             {{ $slot }}
         </div>
     </body>
+    @foreach (['error', 'warning', 'success', 'info'] as $msg)
+        @if(Session::has('alert-' . $msg))
+            <div class="flash-message"
+                 data-flash-message
+                 data-flash-message-type="{{ $msg }}"
+                 data-flash-message-content="{{ Session::get('alert-' . $msg) }}"
+            >
+            </div>
+        @endif
+    @endforeach
 </html>

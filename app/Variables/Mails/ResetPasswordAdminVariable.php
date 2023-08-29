@@ -1,0 +1,38 @@
+<?php
+
+namespace App\Variables\Mails;
+
+use App\Events\Templates\EventWrapper;
+use App\Models\Admin;
+
+class ResetPasswordAdminVariable extends EmailVariables
+{
+    public const VAR_PROCESS_URL = '@VarProcessUrl';
+
+    public static function mockedVariables(array $data = []): array
+    {
+        $faker = \Faker\Factory::create();
+        return array_merge($data, [
+            self::VAR_PROCESS_URL => $faker->url,
+        ]);
+    }
+
+    public static function variablesFromEvent(EventWrapper $event): array
+    {
+        return array_merge(parent::variablesFromEvent($event), [
+            self::VAR_PROCESS_URL => route('auth.reset-password-render', ['token' => $event->getUser()->reset_token]),
+        ]);
+    }
+
+    public static function getVariables(): array
+    {
+        return [
+            self::VAR_PROCESS_URL
+        ];
+    }
+
+    public static function assignableClass(): ?string
+    {
+        return Admin::class;
+    }
+}

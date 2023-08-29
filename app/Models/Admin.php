@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\GuardEnums;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -26,6 +27,7 @@ class Admin extends Authenticatable
         'name',
         'email',
         'password',
+        'reset_token',
     ];
 
     /**
@@ -36,8 +38,7 @@ class Admin extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-        'two_factor_recovery_codes',
-        'two_factor_secret',
+        'reset_token',
     ];
 
     /**
@@ -57,5 +58,20 @@ class Admin extends Authenticatable
         return empty($query) ? static::query()
             : static::where('name', 'like', '%'.$query.'%')
                 ->orWhere('email', 'like', '%'.$query.'%');
+    }
+
+    public function hasPermissionFromGuard(string $permission, $guard = GuardEnums::ADMIN)
+    {
+        $hasPermission = false;
+        $this->roles->each(
+            function (\Spatie\Permission\Models\Role $role) use ($permission, $guard, &$hasPermission) {
+                if ($role->hasPermissionTo($permission, $guard)) {
+                    $hasPermission = true;
+                    return;
+                }
+            }
+        );
+
+        return $hasPermission;
     }
 }

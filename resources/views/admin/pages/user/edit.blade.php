@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-admin-layout>
     <x-slot name="header_content">
         <h1>{{ __('Edit User') }}</h1>
 
@@ -12,4 +12,4 @@
     <div>
         <livewire:user-form action="updateUser" :user="$user"/>
     </div>
-</x-app-layout>
+</x-admin-layout>

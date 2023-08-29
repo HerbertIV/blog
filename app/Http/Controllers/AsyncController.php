@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Dtos\AsyncDtos\PermissionDto;
+use App\Dtos\AsyncDtos\RoleDto;
 use App\Http\Requests\AsyncRequest;
 use App\Http\Resources\AsyncResource;
 use App\Services\Contracts\AsyncServiceContract;
@@ -20,5 +21,19 @@ class AsyncController extends Controller
         $permissionDto = new PermissionDto($asyncRequest->all());
 
         return AsyncResource::collection($this->asyncService->permissions($permissionDto));
+    }
+
+    public function rolesAdmin(AsyncRequest $asyncRequest): JsonResource
+    {
+        $roleDto = new RoleDto($asyncRequest->all());
+
+        return AsyncResource::collection($this->asyncService->rolesAdmin($roleDto));
+    }
+
+    public function rolesBlog(AsyncRequest $asyncRequest): JsonResource
+    {
+        $roleDto = new RoleDto($asyncRequest->all());
+
+        return AsyncResource::collection($this->asyncService->rolesBlog($roleDto));
     }
 }

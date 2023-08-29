@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Controllers\API\CheckController;
-use App\Http\Controllers\API\RegionController;
+use App\Http\Controllers\Blog\BlogsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,8 +14,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('check', [CheckController::class, 'check']);
-
-Route::get('regions', [RegionController::class, 'index']);
-Route::post('check-region', [RegionController::class, 'checkRegion']);
+Route::get('blogs', [BlogsController::class, 'index'])->name('api.blogs.index');
 

@@ -23,7 +23,6 @@
                 <input wire:model="search" class="form-control" type="text" placeholder="Search...">
             </div>
         </div>
-
         <div class="row">
             <div class="table-responsive">
                 <table class="table table-bordered table-striped text-sm text-gray-600">

@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\PermissionEnums;
+
 return [
     [
         'href' => 'dashboard',
@@ -12,29 +14,27 @@ return [
             [
                 'href' => 'roles.index',
                 'text' => 'menu.role.index',
-                'icon' => 'fa-user-group',
+                'icon' => 'fa fa-users',
+                'permission' => 'role' . PermissionEnums::HYPHEN . PermissionEnums::READ_ACTION
             ],
-//            [
-//                'section_text' => 'menu.settings.ecard',
-//                'icon' => 'pocztowki',
-//                'links' => ['ecard.render', 'ecard-theme.render'],
-//                'permission' => [
-//                    PermissionEnums::getPermission('ecard',PermissionEnums::READ_ACTION),
-//                    PermissionEnums::getPermission('ecard-theme',PermissionEnums::READ_ACTION)
-//                ],
-//                'section_list' => [
-//                    [
-//                        'href' => 'ecard.render',
-//                        'text' => 'menu.settings.ecard-photos',
-//                        'permission' => PermissionEnums::getPermission('ecard',PermissionEnums::READ_ACTION),
-//                    ],
-//                    [
-//                        'href' => 'ecard-theme.render',
-//                        'text' => 'menu.settings.ecard-theme',
-//                        'permission' => PermissionEnums::getPermission('ecard-theme',PermissionEnums::READ_ACTION),
-//                    ],
-//                ],
-//            ],
+            [
+                'href' => 'users.index',
+                'text' => 'menu.user.index',
+                'icon' => 'fa fa-user',
+                'permission' => 'user' . PermissionEnums::HYPHEN . PermissionEnums::READ_ACTION
+            ],
+            [
+                'href' => 'admins.index',
+                'text' => 'menu.admins.index',
+                'icon' => 'fa fa-user',
+                'permission' => 'admin' . PermissionEnums::HYPHEN . PermissionEnums::READ_ACTION
+            ],
+            [
+                'href' => 'blogs.index',
+                'text' => 'menu.blogs.index',
+                'icon' => 'fa fa-book',
+                'permission' => 'blog' . PermissionEnums::HYPHEN . PermissionEnums::READ_ACTION
+            ],
         ],
         'text' => '',
         'is_multi' => true,

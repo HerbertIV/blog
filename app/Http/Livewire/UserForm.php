@@ -5,74 +5,68 @@ declare(strict_types = 1);
 namespace App\Http\Livewire;
 
 use App\Dtos\UserDto;
-use App\Http\Requests\UserRequest;
+use App\Http\Requests\User\UserRequest;
 use App\Http\Resources\AsyncResource;
 use App\Models\User;
-use App\Services\Contracts\RegionServiceContract;
+use App\Services\Contracts\RoleServiceContract;
 use App\Services\Contracts\UserServiceContract;
 use Illuminate\Support\Str;
+use Illuminate\View\View;
 use Livewire\Component;
 
 class UserForm extends Component
 {
+    private RoleServiceContract $roleService;
     private UserServiceContract $userService;
-    private RegionServiceContract $regionService;
-    public ?string $firstName = '';
-    public ?string $lastName = '';
-    public ?string $email = '';
-    public ?string $phone = '';
-    public ?bool $active = false;
-    public ?int $regionId = null;
+    public ?array $roles = [];
     public User $user;
     public string $action;
     public array $button;
 
     public function __construct($id = null)
     {
+        $this->roleService = app(RoleServiceContract::class);
         $this->userService = app(UserServiceContract::class);
-        $this->regionService = app(RegionServiceContract::class);
         parent::__construct($id);
     }
 
     protected $listeners = [
-        'toggleSwitcher',
-        'selectedCompanyItem',
+        'selectedRoles',
+        'unselectedRoles',
+        'clearRoles'
     ];
 
-    public function selectedCompanyItem($name, $item)
+    public function selectedRoles($item)
     {
-        $this->$name = (int)$item;
+        $this->roles[] = (int)$item;
     }
 
-    public function toggleSwitcher(string $name, bool $value): void
+    public function unselectedRoles($item)
     {
-        $this->setData([
-            $name => $value
-        ]);
-    }
-
-    public function getRegionIdSelect2Format(): ?array
-    {
-        if ($this->regionId) {
-            return AsyncResource::make($this->regionService->first($this->regionId))->resolve();
+        if (in_array((int)$item, $this->roles)) {
+            unset($this->roles[array_search((int)$item, $this->roles)]);
         }
-        return null;
+    }
+
+    public function clearRoles()
+    {
+        $this->roles = [];
     }
 
     protected function getRules()
     {
-        return (new UserRequest)->rules();
+        return (new UserRequest())->rules();
     }
 
-    public function createUser(): void
+    public function mount(?User $user = null): void
     {
-        $this->resetErrorBag();
-        $this->validate();
-
-        $userDto = new UserDto($this->toArray());
-        $user = $this->userService->create($userDto);
-        $this->emit('saved');
-        $this->redirect(route('users.show', $user));
+        if ($user) {
+            $this->user = $user;
+            $this->setData([
+                'roles' => $this->user->roles ? $this->user->roles->pluck('id')->toArray() : [],
+            ]);
+        }
+        $this->button = create_button($this->action, 'User');
     }
 
     public function updateUser(): void
@@ -88,36 +82,23 @@ class UserForm extends Component
         $this->redirect(route('users.show', $user));
     }
 
-    public function mount(?User $user = null): void
+    public function render(): View
     {
-        if ($user) {
-            $this->user = $user;
-            $this->setData([
-                'first_name' => $this->user->first_name,
-                'last_name' => $this->user->last_name,
-                'email' => $this->user->email,
-                'phone' => $this->user->phone,
-                'active' => $this->user->active,
-                'region_id' => $this->user->region_id,
-            ]);
-        }
-        $this->button = create_button($this->action, 'User');
+        return view('admin.pages.user.components.user-form');
     }
 
-    public function render()
+    public function getRolesSelect2Format(): ?array
     {
-        return view('pages.user.components.user-form');
+        if ($this->roles) {
+            return AsyncResource::collection($this->roleService->get($this->roles))->resolve();
+        }
+        return [];
     }
 
     public function toArray(): array
     {
         return [
-            'first_name' => $this->firstName ?? '',
-            'last_name' => $this->lastName ?? '',
-            'email' => $this->email,
-            'phone' => $this->phone ?? '',
-            'active' => $this->active ?? false,
-            'region_id' => $this->regionId ?? null,
+            'roles' => $this->roles ?? []
         ];
     }
 

@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Dtos\RoleDto;
-use App\Http\Requests\RoleRequest;
+use App\Http\Requests\Role\RoleCreateRequest;
+use App\Http\Requests\Role\RoleDeleteRequest;
+use App\Http\Requests\Role\RoleEditRequest;
+use App\Http\Requests\Role\RoleShowRequest;
 use App\Services\Contracts\RoleServiceContract;
-use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
 use Spatie\Permission\Models\Role;
 
@@ -18,48 +19,28 @@ class RolesController extends Controller
     ) {
     }
 
-    public function index(): View
+    public function index(RoleShowRequest $request): View
     {
         return view('admin.pages.role.index');
     }
 
-    public function create(): View
+    public function create(RoleCreateRequest $request): View
     {
         return view('admin.pages.role.create');
     }
 
-    public function show(Role $role): View
+    public function show(RoleShowRequest $request, Role $role): View
     {
         return view('admin.pages.role.show', ['role' => $role]);
     }
 
-    public function edit(Role $role): View
+    public function edit(RoleEditRequest $request, Role $role): View
     {
         return view('admin.pages.role.edit', ['role' => $role]);
     }
 
-    public function destroy(Role $role)
+    public function destroy(RoleDeleteRequest $request, Role $role)
     {
         $this->roleService->delete($role->getKey());
-    }
-
-    //Currently using livewire
-    public function store(RoleRequest $request): JsonResponse
-    {
-        $roleDto = new RoleDto($request->validated());
-        $this->roleService->create($roleDto);
-        return response()->json([
-            'success' => true
-        ], JsonResponse::HTTP_CREATED);
-    }
-
-    //Currently using livewire
-    public function update(RoleRequest $request, Role $role): JsonResponse
-    {
-        $roleDto = new RoleDto($request->validated());
-        $this->roleService->update($roleDto, $role->getKey());
-        return response()->json([
-            'success' => true
-        ]);
     }
 }

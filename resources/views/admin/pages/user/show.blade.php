@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-admin-layout>
     <x-slot name="header_content">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('User') }}
@@ -22,22 +22,6 @@
                 <dl>
                     <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-500">
-                            {{ __('First name') }}
-                        </dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            <strong>{{ $user->first_name }}</strong>
-                        </dd>
-                    </div>
-                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500">
-                            {{ __('Last name') }}
-                        </dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            <strong>{{ $user->last_name }}</strong>
-                        </dd>
-                    </div>
-                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500">
                             {{ __('Email') }}
                         </dt>
                         <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
@@ -46,32 +30,12 @@
                     </div>
                     <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt class="text-sm font-medium text-gray-500">
-                            {{ __('Phone') }}
+                            {{ __('Roles') }}
                         </dt>
                         <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            <strong>{{ $user->phone }}</strong>
-                        </dd>
-                    </div>
-                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500">
-                            {{ __('Region') }}
-                        </dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            @if ($user->region)
-                                <a href="{{ route('regions.show', $user->region) }}">
-                                    {{ $user->region->name }}
-                                </a>
+                            @if ($user->roles)
+                                {{ implode(', ', $user->roles->pluck('name')->toArray()) }}
                             @endif
-                        </dd>
-                    </div>
-                    <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-500">
-                            {{ __('Active') }}
-                        </dt>
-                        <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                            <div class="badge badge-{{ $user->active ? 'success' : 'danger' }}">
-                                {{ !$user->active ? 'Not' : '' }}Active
-                            </div>
                         </dd>
                     </div>
                 </dl>
@@ -80,5 +44,5 @@
 
     </div>
 
-</x-app-layout>
+</x-admin-layout>
 

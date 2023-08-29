@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Repositories\AdminRepository;
+use App\Repositories\BlogRepository;
 use App\Repositories\Contracts\AdminRepositoryContract;
+use App\Repositories\Contracts\BlogRepositoryContract;
 use App\Repositories\Contracts\PermissionRepositoryContract;
 use App\Repositories\Contracts\RoleRepositoryContract;
 use App\Repositories\Contracts\TemplateRepositoryContract;
@@ -22,5 +24,6 @@ class RepositoriesServiceProvider extends ServiceProvider
         TemplateRepositoryContract::class   => TemplateRepository::class,
         PermissionRepositoryContract::class => PermissionRepository::class,
         RoleRepositoryContract::class       => RoleRepository::class,
+        BlogRepositoryContract::class       => BlogRepository::class
     ];
 }

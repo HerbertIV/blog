@@ -11,7 +11,17 @@
                 <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="index.html">Home</a></li>
                 <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="about.html">About</a></li>
                 <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="post.html">Sample Post</a></li>
-                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="contact.html">Contact</a></li>
+                @if (auth()->guard(\App\Enums\GuardEnums::WEB)->check())
+                    <li class="nav-item">
+                        <form method="POST" action="{{ route('blog-logout') }}">
+                            @csrf
+                            <a href="{{ route('blog-logout') }}" class="nav-link px-lg-3 py-3 py-lg-4" onclick="event.preventDefault();this.closest('form').submit();">Logout</a>
+                        </form>
+                    </li>
+                @else
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ route('blog-login') }}">Login</a></li>
+                    <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="{{ route('blog-register') }}">Register</a></li>
+                @endif
             </ul>
         </div>
     </div>

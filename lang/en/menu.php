@@ -4,10 +4,13 @@ return [
     'user' => [
         'index' => 'Users list'
     ],
-    'region' => [
-        'index' => 'Regions list'
+    'role' => [
+        'index' => 'Roles'
     ],
-    'schedules' => [
-        'index' => 'Schedules'
+    'admins' => [
+        'index' => 'Admins list'
+    ],
+    'blogs' => [
+        'index' => 'Blogs'
     ],
 ];

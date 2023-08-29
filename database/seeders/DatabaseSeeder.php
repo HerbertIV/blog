@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Enums\GuardEnums;
 use App\Models\Admin;
 use App\Models\Permission;
+use App\Models\User;
 use App\Repositories\Contracts\PermissionRepositoryContract;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -40,13 +42,15 @@ class DatabaseSeeder extends Seeder
         ]);
         $this->call(PermissionSeeder::class);
         $this->setRoles();
+
+        User::factory(10)->create();
     }
 
     private function setRoles(): void
     {
-        $adminRole = Role::findOrCreate('admin');
-        $editorRole = Role::findOrCreate('editor');
-        Role::findOrCreate('user');
+        $adminRole = Role::findOrCreate('admin', GuardEnums::ADMIN);
+        $editorRole = Role::findOrCreate('editor', GuardEnums::ADMIN);
+        Role::findOrCreate('user', GuardEnums::WEB);
         $this->userAdmin->roles()->attach($adminRole->getKey());
         $this->editor->roles()->attach($editorRole->getKey());
 

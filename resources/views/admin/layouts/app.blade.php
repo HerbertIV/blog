@@ -20,6 +20,7 @@
         <link rel="stylesheet" href="{{ asset('vendor/notyf/notyf.min.css') }}">
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <link rel="stylesheet" href="{{ asset('stisla/css/custom.css') }}">
         @vite(['resources/css/app.css'])
 
         <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-shims.min.css" media="all">
@@ -29,12 +30,11 @@
         <livewire:styles />
 
         <!-- Scripts -->
-        <script defer src="{{ asset('vendor/alpine.js') }}"></script>
     </head>
-    <body class="antialiased {{ \Illuminate\Support\Facades\Auth::check() ? '' : 'sidebar-mini' }}">
+    <body class="antialiased {{ \Illuminate\Support\Facades\Auth::guard(\App\Enums\GuardEnums::ADMIN)->check() ? '' : 'sidebar-mini' }}">
         <div id="app">
             <div class="main-wrapper">
-                @if (\Illuminate\Support\Facades\Auth::check())
+                @if (\Illuminate\Support\Facades\Auth::guard(\App\Enums\GuardEnums::ADMIN)->check())
                     @include('admin.components.sidebar')
                 @endif
                 @include('admin.components.navbar')
@@ -45,8 +45,6 @@
                       <div class="section-header">
                         @isset($header_content)
                             {{ $header_content }}
-                        @else
-                            {{ __('Halaman') }}
                         @endisset
                       </div>
 
@@ -61,6 +59,7 @@
         @stack('modals')
         <!-- General JS Scripts -->
         <script src="{{ asset('stisla/js/modules/jquery.min.js') }}"></script>
+        <script src="{{ asset('stisla/js/modules/bootstrap.min.js') }}"></script>
         <script defer src="{{ asset('stisla/js/modules/jquery.nicescroll.min.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script defer src="{{ asset('stisla/js/modules/moment.min.js') }}"></script>
@@ -71,11 +70,14 @@
 {{--        <script defer src="{{ asset('vendor/select2/select2.min.js') }}"></script>--}}
         <script src="{{ asset('stisla/js/stisla.js') }}"></script>
         <script src="{{ asset('stisla/js/scripts.js') }}"></script>
-        <livewire:scripts />
+{{--        <script src="{{ asset('vendor/alpine.js') }}"></script>--}}
+{{--        <livewire:scripts />--}}
+        @livewireScripts
         @yield('scripts')
         <script src="{{ asset('stisla/js/custom.js') }}" defer></script>
-        <script src="{{ asset('js/app.js') }}" defer></script>
+        <script src="{{ asset('js/app.js') }}" ></script>
         @vite(['resources/js/app.js'])
+
         @isset($script)
             {{ $script }}
         @endisset

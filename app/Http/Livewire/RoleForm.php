@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace App\Http\Livewire;
 
 use App\Dtos\RoleDto;
-use App\Http\Requests\RoleRequest;
+use App\Http\Requests\Role\RoleRequest;
 use App\Http\Resources\AsyncResource;
 use App\Services\Contracts\PermissionServiceContract;
 use App\Services\Contracts\RoleServiceContract;
@@ -20,6 +20,7 @@ class RoleForm extends Component
     private PermissionServiceContract $permissionService;
     public ?string $name = '';
     public ?array $permissions = [];
+    public ?string $guard = '';
     public Role $role;
     public string $action;
     public array $button;
@@ -57,18 +58,22 @@ class RoleForm extends Component
 
     protected function getRules()
     {
-        return (new RoleRequest())->rules();
+        return array_merge((new RoleRequest())->rules(), [
+            'name' => [
+                'required',
+                'string',
+                'unique:roles,name' . ($this->role->getKey() ? ',' . $this->role->getKey() : null)
+            ],
+        ]);
     }
 
     public function createRole(): void
     {
-
         $this->resetErrorBag();
         $this->validate();
 
         $roleDto = new RoleDto($this->toArray());
         $role = $this->roleService->create($roleDto);
-
         $this->emit('saved');
         $this->redirect(route('roles.show', $role));
     }
@@ -91,6 +96,7 @@ class RoleForm extends Component
             $this->setData([
                 'name' => $this->role->name,
                 'permissions' => $this->role->permissions->pluck('id')->toArray(),
+                'guard' => $this->role->guard_name,
             ]);
         }
         $this->button = create_button($this->action, 'Role');
@@ -113,7 +119,8 @@ class RoleForm extends Component
     {
         return [
             'name' => $this->name,
-            'permissions' => $this->permissions ?? []
+            'permissions' => $this->permissions ?? [],
+            'guard_name' => $this->guard,
         ];
     }
 

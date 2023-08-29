@@ -2,18 +2,26 @@
 
 namespace App\Http\Controllers\Auth\Admin;
 
+use App\Dtos\ResetPasswordAdminDto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\Auth\ResetPasswordRequest;
 use App\Providers\RouteServiceProvider;
+use App\Services\Contracts\AdminServiceContract;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
 
 class AuthController extends Controller
 {
+    public function __construct(
+        private AdminServiceContract $adminService
+    ) {
+    }
+
     /**
      * Display the login view.
      */
@@ -31,9 +39,7 @@ class AuthController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
-
         $request->session()->regenerate();
-
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
@@ -49,5 +55,22 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    public function resetPasswordRender(string $token)
+    {
+        return view('admin.auth.resetPassword', ['token' => $token]);
+    }
+
+    public function resetPassword(ResetPasswordRequest $resetPasswordRequest, string $token)
+    {
+        $resetPasswordAdminDto = new ResetPasswordAdminDto([...$resetPasswordRequest->all(), ...['token' => $token]]);
+        if ($this->adminService->resetPassword($resetPasswordAdminDto)) {
+            Session::flash('success', 'Reset password is successful');
+        } else {
+            Session::flash('error', 'Reset password is error');
+        }
+
+        return redirect()->route('admin-login');
     }
 }

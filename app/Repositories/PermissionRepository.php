@@ -19,7 +19,7 @@ class PermissionRepository extends BaseRepository implements PermissionRepositor
             !empty($actions),
             fn (Builder $query) => $query->where(function (Builder $query) use ($actions) {
                 foreach ($actions as $action) {
-                    $query->orWhere('name', 'like', '%-' . $action);
+                    $query->orWhere('name', 'like', $action . '-%');
                 }
             })
         );

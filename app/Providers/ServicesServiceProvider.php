@@ -3,11 +3,9 @@
 namespace App\Providers;
 
 use App\Services\AdminService;
-use App\Services\AppHeaderService;
 use App\Services\AsyncService;
 use App\Services\BlogService;
 use App\Services\Contracts\AdminServiceContract;
-use App\Services\Contracts\AppHeaderServiceContract;
 use App\Services\Contracts\AsyncServiceContract;
 use App\Services\Contracts\BlogServiceContract;
 use App\Services\Contracts\PermissionServiceContract;
@@ -26,7 +24,6 @@ class ServicesServiceProvider extends ServiceProvider
         AsyncServiceContract::class         => AsyncService::class,
         UserServiceContract::class          => UserService::class,
         TemplateEventServiceContract::class => TemplateEventService::class,
-        AppHeaderServiceContract::class     => AppHeaderService::class,
         RoleServiceContract::class          => RoleService::class,
         PermissionServiceContract::class    => PermissionService::class,
         AdminServiceContract::class         => AdminService::class,

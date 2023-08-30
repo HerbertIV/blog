@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Enums\GuardEnums;
 use App\Models\Admin;
+use App\Models\Blog;
 use App\Models\Permission;
 use App\Models\User;
 use App\Repositories\Contracts\PermissionRepositoryContract;
@@ -42,8 +43,8 @@ class DatabaseSeeder extends Seeder
         ]);
         $this->call(PermissionSeeder::class);
         $this->setRoles();
-
         User::factory(10)->create();
+        $this->call(TemplateSeeder::class);
     }
 
     private function setRoles(): void
@@ -53,11 +54,9 @@ class DatabaseSeeder extends Seeder
         Role::findOrCreate('user', GuardEnums::WEB);
         $this->userAdmin->roles()->attach($adminRole->getKey());
         $this->editor->roles()->attach($editorRole->getKey());
-
         $permissions = $this->permissionRepository->query()->get();
         $adminRole->givePermissionTo($permissions->pluck('name'));
-
-        $permissions = $this->permissionRepository->getWhereActions()->get();
+        $permissions = $this->permissionRepository->getWhereActions(['blog'])->get();
         $adminRole->givePermissionTo($permissions->pluck('name'));
     }
 

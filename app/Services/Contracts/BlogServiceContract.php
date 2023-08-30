@@ -14,5 +14,5 @@ interface BlogServiceContract
     public function get(array $ids): Collection;
     public function delete(int $id): bool;
     public function update(NewsDto $newsDto, int $id): bool;
-    public function paginate(): LengthAwarePaginator;
+    public function paginate(?int $perPage = null, ?int $page = null): LengthAwarePaginator;
 }

@@ -46,8 +46,8 @@ class BlogService implements BlogServiceContract
         });
     }
 
-    public function paginate(): LengthAwarePaginator
+    public function paginate(?int $perPage = null, ?int $page = null): LengthAwarePaginator
     {
-        return $this->blogRepository->query()->paginate();
+        return $this->blogRepository->query()->paginate($perPage, ['*'], 'page', $page);
     }
 }

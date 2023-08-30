@@ -5,8 +5,6 @@ use App\Http\Controllers\Blog\BlogsController;
 use App\Http\Controllers\Blog\HomepageController;
 use Illuminate\Support\Facades\Route;
 
-
-Route::get('index', [HomepageController::class, 'index']);
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'renderLogin'])
         ->name('blog-login');

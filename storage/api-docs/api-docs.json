@@ -1,0 +1,171 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "My API",
+        "version": "1"
+    },
+    "paths": {
+        "/api/blogs": {
+            "get": {
+                "tags": [
+                    "Get news"
+                ],
+                "description": "It is endpoints list with news",
+                "operationId": "32d222f63182f436f9ea70a138eb2bcd",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Blog"
+                                            },
+                                            "nullable": false
+                                        },
+                                        "links": {
+                                            "$ref": "#/components/schemas/PaginationLinks"
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/PaginationMeta"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable content"
+                    }
+                }
+            }
+        },
+        "/api/blogs/{blog}": {
+            "get": {
+                "tags": [
+                    "Get news detail"
+                ],
+                "description": "It is endpoints detail news",
+                "operationId": "41c09322d38a3c1ab099d64f8ad4fa09",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Blog"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable content"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Blog": {
+                "title": "Blog",
+                "properties": {
+                    "title": {
+                        "description": "Transform the resource into an array.",
+                        "type": "string",
+                        "nullable": false
+                    },
+                    "content": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "nullable": false
+                    }
+                },
+                "type": "object"
+            },
+            "PaginationLinks": {
+                "title": "Pagination Links",
+                "properties": {
+                    "first": {
+                        "type": "string",
+                        "nullable": false
+                    },
+                    "last": {
+                        "type": "string",
+                        "nullable": false
+                    },
+                    "prev": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "next": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "PaginationMeta": {
+                "title": "Pagination Meta",
+                "properties": {
+                    "current_page": {
+                        "type": "integer",
+                        "nullable": false
+                    },
+                    "from": {
+                        "type": "integer",
+                        "nullable": false
+                    },
+                    "last_page": {
+                        "type": "integer",
+                        "nullable": false
+                    },
+                    "links": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "url": {
+                                    "type": "string",
+                                    "nullable": true
+                                },
+                                "label": {
+                                    "type": "string",
+                                    "nullable": false
+                                },
+                                "active": {
+                                    "type": "boolean",
+                                    "nullable": false
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "path": {
+                        "type": "string",
+                        "nullable": false
+                    },
+                    "per_page": {
+                        "type": "integer",
+                        "nullable": false
+                    },
+                    "to": {
+                        "type": "integer",
+                        "nullable": false
+                    },
+                    "total": {
+                        "type": "integer",
+                        "nullable": false
+                    }
+                },
+                "type": "object"
+            }
+        }
+    }
+}

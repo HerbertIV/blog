@@ -1,6 +1,11 @@
 <form id="contactForm" action="{{ route('blog-register.store') }}" method="POST">
     @csrf
     <div class="form-floating">
+        <input class="form-control" name="name" id="name" type="text" placeholder="Enter your name..." >
+        <label for="email">Name</label>
+        <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
+    </div>
+    <div class="form-floating">
         <input class="form-control" name="email" id="email" type="text" placeholder="Enter your email..." >
         <label for="email">Email</label>
         <div class="invalid-feedback" data-sb-feedback="email:required">A email is required.</div>

@@ -15,4 +15,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('blogs', [BlogsController::class, 'index'])->name('api.blogs.index');
+Route::get('blogs/{id}', [BlogsController::class, 'show'])->name('api.blogs.show');
 

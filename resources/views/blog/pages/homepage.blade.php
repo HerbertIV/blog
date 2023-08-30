@@ -1,4 +1,7 @@
 @extends('blog.layouts.app')
+@section('title')
+    <h1>Homepage</h1>
+@endsection
 @section('content')
     <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
@@ -17,10 +20,7 @@
                     <!-- Divider-->
                     <hr class="my-4" />
                 @endforeach
-                <!-- Divider-->
-                <hr class="my-4" />
-                <!-- Pager-->
-                <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older Posts →</a></div>
+                    {{ $blogs->links('vendor.pagination.bootstrap-5') }}
             </div>
         </div>
     </div>

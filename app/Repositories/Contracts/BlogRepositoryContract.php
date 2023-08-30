@@ -2,7 +2,7 @@
 
 namespace App\Repositories\Contracts;
 
-interface BlogRepositoryContract
+interface BlogRepositoryContract extends BaseRepositoryContract
 {
 
 }
